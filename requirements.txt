@@ -1,0 +1,10 @@
+ninja
+yacs
+cython
+matplotlib=3.1.1
+tqdm
+torch==1.6.0
+torchvision==0.7.0
+torchmeta==1.7.0
+opencv-python
+tensorboardX
