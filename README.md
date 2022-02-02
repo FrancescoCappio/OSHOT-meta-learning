@@ -92,4 +92,8 @@ corresponding `_meta` config file:
 ```bash
 python tools/oshot_net.py --config-file configs/amd/oshot_clipart_target_meta.yaml --ckpt <meta_pretrain_output_dir>/model_final.pth
 ```
+# Qualitative results
 
+Some visualizations for OSHOT, Full-OSHOT and baseline methods:
+
+![Qualitative results](media/qualitative_results.png){width=70%}
