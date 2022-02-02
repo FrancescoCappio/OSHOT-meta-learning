@@ -96,4 +96,4 @@ python tools/oshot_net.py --config-file configs/amd/oshot_clipart_target_meta.ya
 
 Some visualizations for OSHOT, Full-OSHOT and baseline methods:
 
-![Qualitative results](media/qualitative_results.png){width=70%}
+![Qualitative results](media/qualitative_results.png)
