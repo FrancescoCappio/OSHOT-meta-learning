@@ -51,6 +51,8 @@ Create a folder named `datasets` and include VOC2007 and VOC2012 source datasets
 Download and extract clipart1k, comic2k and watercolor2k from [authors'
 website](https://naoto0804.github.io/cross_domain_detection/).
 
+If you would like to get our Social Bikes dataset, please contact me (Francesco Cappio) via email.
+
 ## Performing pretraining 
 
 To perform a *standard* OSHOT pretraing using Pascal VOC as source dataset:
