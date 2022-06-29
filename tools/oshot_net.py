@@ -61,7 +61,10 @@ def main():
     cfg.merge_from_list(args.opts)
     cfg.freeze()
 
-    save_dir = ""
+    save_dir = cfg.OUTPUT_DIR
+    if save_dir:
+        mkdir(save_dir)
+
     logger = setup_logger("maskrcnn_benchmark", save_dir, get_rank())
     logger.info("Using {} GPUs".format(num_gpus))
     logger.info(cfg)
@@ -71,13 +74,6 @@ def main():
 
     model = build_detection_model(cfg)
     model.to(cfg.MODEL.DEVICE)
-
-    #NUOVO CODICE DI PROVA
-    #for name, param in model.named_parameters():
-    #    #print(name)
-    #    if "backbone" in name:
-    #        param.requires_grad = False
-    #return 0
 
     # Initialize mixed-precision if necessary
     use_mixed_precision = cfg.DTYPE == 'float16'

@@ -22,7 +22,7 @@ from .bbox_aug import im_detect_bbox_aug
 
 
 def compute_on_dataset(model, data_loader, device, oshot_breakpoints, timer=None, cfg=None):
-    results = [{} for _ in range(len(oshot_breakpoints))]
+    results = [{} for _ in range(len(oshot_breakpoints) + 1)] # add one to store results of no adaptation (gamma=0)
 
     checkpoint = copy.deepcopy(model.state_dict())
     cpu_device = torch.device("cpu")
@@ -45,6 +45,10 @@ def compute_on_dataset(model, data_loader, device, oshot_breakpoints, timer=None
             output = model(images.to(device))
             torch.cuda.synchronize()
             output = [o.to(cpu_device) for o in output]
+            results[0].update(
+                {img_id: result for img_id, result in zip(image_ids, output)}
+            )
+
         if logging_enabled:
             image_name = data_loader.dataset.get_img_name(image_ids[0])
             log_test_image(cfg, summary_writer, "detections_0_its".format(), image_ids[0], images, output, image_name=image_name)
@@ -75,7 +79,7 @@ def compute_on_dataset(model, data_loader, device, oshot_breakpoints, timer=None
 
                 optimizer.step()
             except AttributeError:
-                print("AttributeError, maybe no detections detected?")
+                #print("AttributeError, maybe no detections detected?")
                 pass
             
             if (oshot_it + 1) in oshot_breakpoints:
@@ -92,7 +96,7 @@ def compute_on_dataset(model, data_loader, device, oshot_breakpoints, timer=None
                             torch.cuda.synchronize()
                         timer.toc()
                     output = [o.to(cpu_device) for o in output]
-                results[oshot_breakpoints.index(oshot_it+1)].update(
+                results[oshot_breakpoints.index(oshot_it+1) + 1].update(
                     {img_id: result for img_id, result in zip(image_ids, output)}
                 )
                 if logging_enabled:
@@ -173,8 +177,9 @@ def oshot_inference(
         return
 
     if output_folder:
-        for i in range(len(predictions)):
-            torch.save(predictions[i], os.path.join(output_folder, "oshot_predictions_%d.pth" % oshot_breakpoints[i]))
+        torch.save(predictions[0], os.path.join(output_folder, "oshot_predictions_0.pth"))
+        for i in range(len(predictions) - 1):
+            torch.save(predictions[i+1], os.path.join(output_folder, "oshot_predictions_%d.pth" % oshot_breakpoints[i]))
 
     extra_args = dict(
         box_only=box_only,
