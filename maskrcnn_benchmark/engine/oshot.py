@@ -29,7 +29,7 @@ def compute_on_dataset(model, data_loader, device, oshot_breakpoints, timer=None
 
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9, weight_decay=0.0001)
     
-    logging_enabled = True
+    logging_enabled = False
     if logging_enabled:
         import tensorboardX
         summary_writer = tensorboardX.SummaryWriter(log_dir=cfg.OUTPUT_DIR)
