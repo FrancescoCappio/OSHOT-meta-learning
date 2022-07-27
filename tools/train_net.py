@@ -190,7 +190,7 @@ def main():
         "--use_tensorboard",
         default=False,
         type=bool,
-        help="Enable/disable tensorboard logging (enabled by default)"
+        help="Enable/disable tensorboard logging (disabled by default)"
     )
     parser.add_argument(
         "--skip-test",
